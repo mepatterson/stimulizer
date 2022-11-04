@@ -87,10 +87,13 @@ module Stimulizer
     {}.tap do |hash|
       hash[:"data-controller"] = ""
 
+      local_controller_name = stimulus_controller
+
       if default_controller.to_s.downcase.to_sym == :controller
         hash[:"data-controller"] += " #{stimulus_controller}"
       elsif controller_name.present?
         hash[:"data-controller"] += " #{controller_name}"
+        local_controller_name = controller_name
       end
 
       hash[:"data-controller"] += " #{controller}" if controller
@@ -107,7 +110,7 @@ module Stimulizer
           if function.include?("#")
             "#{event}#{function}"
           else
-            "#{event}#{stimulus_controller}##{function}"
+            "#{event}#{local_controller_name}##{function}"
           end
         end.compact
 
@@ -115,18 +118,18 @@ module Stimulizer
       end
 
       params&.each do |key, value|
-        hash[:"data-#{stimulus_controller}-#{LuckyCase.dash_case(key.to_s)}-param"] = value
+        hash[:"data-#{local_controller_name}-#{LuckyCase.dash_case(key.to_s)}-param"] = value
       end
 
       values&.each do |key, value|
-        hash[:"data-#{stimulus_controller}-#{LuckyCase.dash_case(key.to_s)}-value"] = value
+        hash[:"data-#{local_controller_name}-#{LuckyCase.dash_case(key.to_s)}-value"] = value
       end
 
       classes&.each do |key, value|
-        hash[:"data-#{stimulus_controller}-#{LuckyCase.dash_case(key.to_s)}-class"] = value
+        hash[:"data-#{local_controller_name}-#{LuckyCase.dash_case(key.to_s)}-class"] = value
       end
 
-      hash[:"data-#{stimulus_controller}-target"] = target if target
+      hash[:"data-#{local_controller_name}-target"] = target if target
     end
   end
 end
