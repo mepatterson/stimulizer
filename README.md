@@ -49,7 +49,7 @@ Or install it yourself as:
     $ gem install stimulizer
 
 ## Usage
-Include this in your model:
+Include this in your class:
 
 ```ruby
 class MyComponent < ApplicationComponent
