@@ -75,7 +75,8 @@ module Stimulizer
   # ... or combine them:
   #
   #   <%= stimulus(:controller, target: "button", action: "click->doThing")
-  def build_stimulus_hash(default_controller = false, controller: nil, target: nil, action: nil, params: nil, values: nil, classes: nil)
+  def build_stimulus_hash(default_controller = false, controller_name: nil, controller: nil, target: nil, action: nil, params: nil, values: nil, classes: nil)
+    raise ArgumentError(":controller_name specified, but blank") if controller_name&.blank?
     raise ArgumentError(":controller specified, but blank") if controller&.blank?
     raise ArgumentError(":target specified, but blank") if target&.blank?
     raise ArgumentError(":action specified, but blank") if action&.blank?
@@ -88,6 +89,8 @@ module Stimulizer
 
       if default_controller.to_s.downcase.to_sym == :controller
         hash[:"data-controller"] += " #{stimulus_controller}"
+      elsif controller_name.present?
+        hash[:"data-controller"] += " #{controller_name}"
       end
 
       hash[:"data-controller"] += " #{controller}" if controller
