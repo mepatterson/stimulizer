@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "stimulizer"
+
 require "active_support/concern"
 require "dry-configurable"
 require "lucky_case"
@@ -32,7 +34,15 @@ module Stimulizer
   end
 
   def stimulus_hash(*args)
-    build_stimulus_hash(*args)
+    if args.size == 1 && !args.first.is_a?(Hash)
+      build_stimulus_hash(args.first)
+    elsif args.size == 1 && args.first.is_a?(Hash)
+      build_stimulus_hash(**args.first)
+    elsif args.size == 2 && args[1..].all? { |a| a.is_a?(Hash) }
+      build_stimulus_hash(args[0], **args[1..].first)
+    else
+      raise ArgumentError, "wrong number of arguments (given #{args.size}, expected 1..2)"
+    end
   end
 
   def stimulus(*args)
