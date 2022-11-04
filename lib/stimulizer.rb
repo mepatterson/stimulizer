@@ -31,8 +31,12 @@ module Stimulizer
     build_stimulus_controller
   end
 
+  def stimulus_hash(*args)
+    build_stimulus_hash(*args)
+  end
+
   def stimulus(*args)
-    output = build_stimulus_hash(*args)
+    output = stimulus_hash(*args)
     return output if _stimulizer_opts[:output] == :hash
 
     raw(
