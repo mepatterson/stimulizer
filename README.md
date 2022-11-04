@@ -16,7 +16,7 @@ For example:
 <div 
   data-controller="mynamespace--deeper--buttons-grid-component"
   data-mynamespace--deeper--buttons-grid-component-url-value="http://example.com"
-  data-mynamespace--deeper--buttons-grid-component-url-color="#ff0000"
+  data-mynamespace--deeper--buttons-grid-component-color-value="#ff0000"
   data-action="click->data-mynamespace--deeper--buttons-grid-component#doSomething"
 >
 ```
