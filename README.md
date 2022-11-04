@@ -1,8 +1,36 @@
 # Stimulizer
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/stimulizer`. To experiment with that code, run `bin/console` for an interactive prompt.
+Easily work with StimulusJS `data-*` attributes in views, templates, ViewComponents, Phlex templates, etc.
 
-TODO: Delete this and the text above, and describe your gem
+This gem is particularly handy in ViewComponents and Phlex.
+
+For example:
+
+### ViewComponent
+```ruby
+  class Mynamespace::Deeper::ButtonsGridComponent < ApplicationComponent
+  # ...
+```
+#### Before
+```html
+<div 
+  data-controller="mynamespace--deeper--buttons-grid-component"
+  data-mynamespace--deeper--buttons-grid-component-url-value="http://example.com"
+  data-mynamespace--deeper--buttons-grid-component-url-color="#ff0000"
+  data-action="click->data-mynamespace--deeper--buttons-grid-component#doSomething"
+>
+```
+
+#### After
+```html
+<div 
+  <%= stimulus(
+    :controller, 
+    values: {url: "http://example.com", color: "#ff0000"}, 
+    action: "click->doSomething"
+  )%>
+>
+```
 
 ## Installation
 
@@ -21,8 +49,63 @@ Or install it yourself as:
     $ gem install stimulizer
 
 ## Usage
+Include this in your model:
 
-TODO: Write usage instructions here
+```ruby
+class MyComponent < ApplicationComponent
+  include Stimulizer
+  # ...
+```
+
+Render the stimulusjs data strings into your template...
+
+```html
+  <!-- use the derived controller name -->
+  <%= stimulus(:controller) %>   
+
+  <!-- specify the controller explicity, and/or add more controllers -->
+  <%= stimulus(controller: "another-controller foo-controller")
+  
+  <!-- Note: 'action' is singular because it works like 'data-action' -->
+  <%= stimulus(action: "click->doThing")
+
+  <!-- but you can have multiple actions separated by spaces -->
+  <%= stimulus(action: "click->doThing mouseup->otherThing")
+
+  <!-- you can also skip the event, just like usual -->
+  <%= stimulus(action: "doThing")
+
+  <!-- 
+    target for this element (if you need to also target it for other controllers, you'll have to do that manually with the old 'data-blah-target=' approach)
+  -->
+  <%= stimulus(target: "button")
+
+  <!-- supports the 'classes' feature -->
+  <%= stimulus(classes: {foo: "text-red-500", busy: "opacity-50 animate-spin"})
+  
+  <!-- supports the 'values' feature -->
+  <%= stimulus(values: {url: "https://example.com"})
+
+  <!-- supports the 'params' feature -->
+  <%= stimulus(params: {foo: "bar", this_thing: "whatever"})
+```
+... or combine them:
+```
+  <%= stimulus(:controller, target: "button", action: "click->doThing")
+```
+
+## Using with Phlex (or if you want a hash)
+By default, Stimulizer returns a html-style string of `data-*` attributes from the `stimulus()` method. But if you're using something like Phlex templates, or if you want to use this with a tag-building method, you might want the original Hash instead. You have two options:
+
+### Class-level configuration
+Use the 
+
+```ruby
+module Views
+  class ApplicationView < Phlex::View
+    include Stimulizer
+
+
 
 ## Development
 
