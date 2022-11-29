@@ -85,7 +85,7 @@ module Stimulizer
   # ... or combine them:
   #
   #   <%= stimulus(:controller, target: "button", action: "click->doThing")
-  def build_stimulus_hash(default_controller = false, controller_name: nil, controller: nil, target: nil, action: nil, params: nil, values: nil, classes: nil)
+  def build_stimulus_hash(default_controller = false, controller_name: nil, controller: nil, target: nil, action: nil, params: nil, values: nil, classes: nil, outlets: nil)
     raise ArgumentError(":controller_name specified, but blank") if controller_name&.blank?
     raise ArgumentError(":controller specified, but blank") if controller&.blank?
     raise ArgumentError(":target specified, but blank") if target&.blank?
@@ -93,6 +93,7 @@ module Stimulizer
     raise ArgumentError(":params specified, but blank") if params&.blank?
     raise ArgumentError(":values specified, but blank") if values&.blank?
     raise ArgumentError(":classes specified, but blank") if classes&.blank?
+    raise ArgumentError(":outlets specified, but blank") if outlets&.blank?
 
     {}.tap do |hash|
       hash[:"data-controller"] = ""
@@ -137,6 +138,10 @@ module Stimulizer
 
       classes&.each do |key, value|
         hash[:"data-#{local_controller_name}-#{LuckyCase.dash_case(key.to_s)}-class"] = value
+      end
+
+      outlets&.each do |key, value|
+        hash[:"data-#{local_controller_name}-#{LuckyCase.dash_case(key.to_s)}-outlet"] = value
       end
 
       hash[:"data-#{local_controller_name}-target"] = target if target
