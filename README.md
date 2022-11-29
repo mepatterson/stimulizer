@@ -49,6 +49,18 @@ Or install it yourself as:
     $ gem install stimulizer
 
 ## Usage
+### in a classic ERB View
+Include the module in your ApplicationController (or individual controllers):
+
+```ruby
+class ApplicationController < ActionController::Base
+  include Stimulizer
+  helper_method :stimulus
+  # ...
+```
+NOTE that you have to add `helper_method :stimulus` to ensure the view templates can use the `stimulus` method.
+
+### in a ViewComponent
 Include this in your class:
 
 ```ruby
