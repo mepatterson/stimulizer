@@ -88,6 +88,9 @@ Render the stimulusjs data strings into your template...
 
   <!-- supports the 'params' feature -->
   <%= stimulus(params: {foo: "bar", this_thing: "whatever"})
+     
+  <!-- supports the 'outlets' feature -->
+  <%= stimulus(outlets: {foo: ".my-class", bar: "#widget"})     
 ```
 ... or combine them:
 ```
