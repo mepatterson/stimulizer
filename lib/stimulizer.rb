@@ -49,13 +49,11 @@ module Stimulizer
     output = stimulus_hash(*args)
     return output if _stimulizer_opts[:output] == :hash
 
-    raw(
-      output.to_a
-        .map { |k, v| %(#{k.to_s.strip}="#{v.to_s.strip}") }
-        .join(" ")
-        .squish
-        .strip
-    )
+    output.to_a
+      .map { |k, v| %(#{k.to_s.strip}="#{v.to_s.strip}") }
+      .join(" ")
+      .squish
+      .strip
   end
 
   private
