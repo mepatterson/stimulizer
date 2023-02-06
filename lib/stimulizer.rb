@@ -54,6 +54,7 @@ module Stimulizer
       .join(" ")
       .squish
       .strip
+      .html_safe
   end
 
   private
